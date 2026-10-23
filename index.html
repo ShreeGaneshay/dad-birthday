@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy 51st Birthday, Dad!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,800;1,9..144,500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#EBBCC6; --peach:#F9E3D6; --sage:#C4D188; --green:#7D9920;
+  --yellow:#F4CF5D; --dark:#3A4A0B; --rose:#9C3F5C; --paper:#FFFBF7;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{
+  background:linear-gradient(160deg,var(--peach) 0%,#F6D3D3 45%,var(--sage) 130%);
+  font-family:'Fraunces',Georgia,serif;color:var(--dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;overflow:hidden;position:relative;
+}
+#petals{position:fixed;inset:0;pointer-events:none;z-index:40}
+
+/* ===== balloons (background) ===== */
+.balloon{position:fixed;bottom:-200px;z-index:0;animation:rise linear infinite;opacity:.95}
+@keyframes rise{
+  0%{transform:translateY(0) translateX(0) rotate(-4deg)}
+  50%{transform:translateY(-60vh) translateX(18px) rotate(4deg)}
+  100%{transform:translateY(-130vh) translateX(-10px) rotate(-3deg)}
+}
+
+/* ===== the card ===== */
+.book{position:relative;z-index:5;width:min(90vw,410px);height:min(76vh,610px);perspective:1800px}
+.leaf{
+  position:absolute;inset:0;background:var(--paper);border-radius:6px 16px 16px 6px;
+  transform-origin:left center;
+  transition:transform 1s cubic-bezier(.6,.05,.25,1),opacity .4s ease .6s;
+  box-shadow:0 18px 40px rgba(125,60,80,.28);backface-visibility:hidden;
+  padding:36px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:14px;overflow:hidden;border:3px solid var(--pink);
+}
+.leaf::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:linear-gradient(90deg,rgba(125,60,80,.15),transparent)}
+.leaf.turned{transform:rotateY(-150deg);opacity:0;pointer-events:none}
+.leaf.hidden{visibility:hidden}
+.leaf > *{position:relative;z-index:2}
+.flower{position:absolute!important;z-index:1!important;pointer-events:none}
+
+/* cover */
+.cover{background:linear-gradient(170deg,var(--pink),#F3CDD2 55%,var(--peach));cursor:pointer;border:3px solid var(--green);outline:2px dashed var(--rose);outline-offset:-14px}
+.cover h1{font-size:clamp(2.1rem,9vw,3rem);font-weight:800;line-height:1.05;color:var(--rose)}
+.cover .big{font-size:7rem;font-weight:800;line-height:.9;color:var(--green);text-shadow:3px 3px 0 var(--yellow)}
+.tap{font-family:'Caveat',cursive;font-size:1.7rem;color:var(--dark);background:var(--yellow);padding:4px 20px;border-radius:99px;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(-6px)}}
+
+/* text */
+h2{font-size:1.85rem;font-weight:800;line-height:1.1;color:var(--rose)}
+p{font-size:1.05rem;line-height:1.6;max-width:30ch}
+.hand{font-family:'Caveat',cursive;font-size:1.7rem;line-height:1.25;color:var(--green);font-weight:700}
+.sign{font-family:'Caveat',cursive;font-size:2rem;color:var(--rose);font-weight:700}
+ul{list-style:none;padding:0;display:grid;gap:12px;text-align:left}
+li{font-size:1.05rem;line-height:1.4;padding-left:30px;position:relative}
+li::before{content:"✿";position:absolute;left:0;color:var(--green);font-size:1.15rem}
+
+/* photos */
+.photo{position:relative;background:#fff;padding:9px 9px 32px;box-shadow:0 6px 16px rgba(125,60,80,.3);transform:rotate(var(--r,-2deg));cursor:pointer;flex:none;border-radius:3px}
+.photo::after{content:"";position:absolute;top:-9px;left:50%;width:54px;height:18px;margin-left:-27px;background:rgba(244,207,93,.75);transform:rotate(-3deg)}
+.photo .frame{width:100%;height:100%;background:var(--peach);display:grid;place-items:center;overflow:hidden;color:var(--rose);font-size:.9rem}
+.photo img{.photo .frame{position:relative}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block} width:100%;height:100%;object-fit:cover;display:block}
+.photo .cap{position:absolute;bottom:5px;left:0;right:0;font-family:'Caveat',cursive;font-size:1.25rem;color:var(--dark)}
+.xl{width:250px;height:290px}.lg{width:215px;height:240px}.md{width:170px;height:185px}.sm{width:132px;height:148px}
+.row{display:flex;gap:12px;justify-content:center;align-items:center}
+.stack{display:flex;flex-direction:column;align-items:center;gap:16px}
+
+/* controls */
+.nav{position:relative;z-index:5;display:flex;align-items:center;gap:16px;opacity:0;pointer-events:none;transition:opacity .5s}
+.nav.on{opacity:1;pointer-events:auto}
+.nav button{background:var(--green);color:#fff;border:0;border-radius:99px;padding:10px 22px;font:700 1rem 'Fraunces',serif;cursor:pointer;box-shadow:0 4px 0 var(--dark)}
+.nav button:active{transform:translateY(2px);box-shadow:0 2px 0 var(--dark)}
+.nav button:disabled{opacity:.35;cursor:default}
+.nav button:focus-visible,.cover:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+.dots{display:flex;gap:7px}.dots i{width:9px;height:9px;border-radius:50%;background:#fff;border:1px solid var(--green)}.dots i.on{background:var(--rose);border-color:var(--rose)}
+@media (max-height:640px){.xl{height:230px;width:210px}.lg{height:190px;width:180px}.md{height:150px;width:140px}.sm{height:116px;width:104px}h2{font-size:1.5rem}}
+@media (prefers-reduced-motion:reduce){.leaf{transition:none}.tap,.balloon{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="petals"></canvas>
+<div id="balloons"></div>
+
+<div class="book" id="book">
+
+  <!-- PAGE 7 : 1 photo + thank you -->
+  <section class="leaf" style="z-index:1">
+    <h2>Thank you, Dad</h2>
+    <div class="photo xl" data-photo="photo7" style="--r:1.5deg"><div class="frame">Tap to add photo</div><div class="cap">Our best day</div></div>
+    <p class="hand">We love you to the moon and back!</p>
+    <div class="sign">With all our love,<br>YOUR LOVELY FAMILY❤</div>
+  </section>
+
+  <!-- PAGE 6 : wishes -->
+  <section class="leaf" style="z-index:2">
+    <h2>My wishes for your 51st</h2>
+    <ul>
+      <li>Good health and a strong heart</li>
+      <li>Lots of laughter and peaceful mornings</li>
+      <li>Trips you've always wanted to take</li>
+      <li>Your favourite meals, every week</li>
+      <li>More time with the people you love</li>
+    </ul>
+    <div class="hand">Here's to the best year yet!</div>
+  </section>
+
+  <!-- PAGE 5 : 3 photos -->
+  <section class="leaf" style="z-index:3">
+    <h2>Smiles we'll never forget</h2>
+    <div class="row">
+      <div class="photo sm" data-photo="photo4" style="--r:-4deg"><div class="frame">Add photo</div></div>
+      <div class="photo sm" data-photo="photo5" style="--r:3deg"><div class="frame">Add photo</div></div>
+    </div>
+    <div class="photo md" data-photo="photo6" style="--r:-1.5deg"><div class="frame">Add photo</div><div class="cap">Family time</div></div>
+  </section>
+
+  <!-- PAGE 4 : text -->
+  <section class="leaf" style="z-index:4">
+    <h2>What you taught me</h2>
+    <ul>
+      <li>Work hard, but never forget to smile</li>
+      <li>Be kind, even when nobody is watching</li>
+      <li>Family always comes first</li>
+      <li>Stay calm, things work out</li>
+    </ul>
+    <div class="hand">You're my hero, always.</div>
+  </section>
+
+  <!-- PAGE 3 : 2 photos -->
+  <section class="leaf" style="z-index:5">
+    <h2>Memories with you</h2>
+    <div class="stack">
+      <div class="photo md" data-photo="photo2" style="--r:-3deg"><div class="frame">Tap to add photo</div><div class="cap">Remember this?</div></div>
+      <div class="photo md" data-photo="photo3" style="--r:3deg"><div class="frame">Tap to add photo</div><div class="cap">Good times</div></div>
+    </div>
+  </section>
+
+  <!-- PAGE 2 : 1 photo -->
+  <section class="leaf" style="z-index:6">
+    <h2>Dear Dad,</h2>
+    <div class="photo xl" data-photo="photo1" style="--r:-2deg"><div class="frame">Tap to add photo</div><div class="cap">The one and only</div></div>
+    <p>Another year, another reason to celebrate the best dad in the world.</p>
+  </section>
+
+  <!-- COVER -->
+  <section class="leaf cover" id="cover" style="z-index:7" tabindex="0" role="button" aria-label="Open the card">
+    <div class="big">51</div>
+    <h1>Happy Birthday,<br>Dad!</h1>
+    <div class="tap">Tap to open ✉</div>
+  </section>
+</div>
+
+<div class="nav" id="nav">
+  <button id="prev" aria-label="Previous page">‹ Back</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Next page">Next ›</button>
+</div>
+
+<script>
+/* ============================================================
+   EDIT HERE: add your photo file names (same folder as this file)
+   e.g. photo1: "dad1.jpg"   — leave "" for the "Tap to add photo" box
+   Layout:  photo1 = page 2 (1 photo)      photo2, photo3 = page 3 (2 photos)
+            photo4, photo5, photo6 = page 5 (3 photos)   photo7 = last page (1 photo)
+   ============================================================ */
+const PHOTOS = {
+  photo1: "images/dad5.jpeg",
+  photo2: "images/dad2.jpeg", photo3: "images/dad10.jpeg",
+  photo4: "images/dad1.jpeg", photo5: "images/dad4.jpeg", photo6: "images/dad7.jpeg",
+  photo7: "images/dad8.jpeg"
+};
+
+/* ---- photos ---- */
+document.querySelectorAll('[data-photo]').forEach(el=>{
+  const frame=el.querySelector('.frame'), src=PHOTOS[el.dataset.photo];
+  const show=u=>{frame.innerHTML='';const i=new Image();i.src=u;i.alt='Photo';frame.appendChild(i)};
+  if(src) show(src);
+  el.addEventListener('click',()=>{ // preview only: pick a photo from your device
+    if(src) return;
+    const f=document.createElement('input');f.type='file';f.accept='image/*';
+    f.onchange=()=>{if(f.files[0]) show(URL.createObjectURL(f.files[0]))};f.click();
+  });
+});
+
+/* ---- flowers in the corners of every page ---- */
+function flower(c1,c2,s){
+  let p='';for(let i=0;i<6;i++)p+=`<ellipse cx="50" cy="26" rx="13" ry="23" fill="${c1}" transform="rotate(${i*60} 50 50)"/>`;
+  return `<svg class="flower" width="${s}" height="${s}" viewBox="0 0 100 100">${p}<circle cx="50" cy="50" r="12" fill="${c2}"/></svg>`;
+}
+document.querySelectorAll('.leaf').forEach((l,i)=>{
+  const cover=l.classList.contains('cover');
+  l.insertAdjacentHTML('afterbegin',
+    flower('#EBBCC6','#F4CF5D',90).replace('class="flower"','class="flower" style="top:-26px;right:-22px;opacity:.9"')+
+    flower('#C4D188','#7D9920',70).replace('class="flower"','class="flower" style="bottom:-20px;left:-16px;opacity:.9"')+
+    (cover?flower('#F4CF5D','#9C3F5C',60).replace('class="flower"','class="flower" style="bottom:50px;right:-14px"'):
+      flower('#EBBCC6','#7D9920',54).replace('class="flower"','class="flower" style="bottom:-12px;right:24px;opacity:.8"')));
+});
+
+/* ---- balloons ---- */
+const cols=['#EBBCC6','#C4D188','#F4CF5D','#7D9920','#F3A6B8'];
+const bw=document.getElementById('balloons');
+for(let i=0;i<9;i++){
+  const c=cols[i%cols.length], w=46+Math.random()*30, d=Math.random();
+  const b=document.createElement('div');b.className='balloon';
+  b.style.left=(4+i*11)+'%';b.style.animationDuration=(16+d*12)+'s';b.style.animationDelay=(-d*20)+'s';
+  b.innerHTML=`<svg width="${w}" height="${w*2.1}" viewBox="0 0 60 126"><path d="M30 2C13 2 3 17 3 33c0 18 14 33 27 36 13-3 27-18 27-36C57 17 47 2 30 2z" fill="${c}"/><ellipse cx="19" cy="22" rx="6" ry="10" fill="#fff" opacity=".45" transform="rotate(20 19 22)"/><path d="M30 69l-5 7h10z" fill="${c}"/><path d="M30 76c-8 14 8 24 0 48" stroke="#3A4A0B" stroke-opacity=".5" fill="none" stroke-width="1.3"/></svg>`;
+  bw.appendChild(b);
+}
+
+/* ---- page turning ---- */
+const leaves=[...document.querySelectorAll('.leaf')].reverse();
+const nav=document.getElementById('nav'),prev=document.getElementById('prev'),next=document.getElementById('next'),dots=document.getElementById('dots');
+leaves.forEach(()=>dots.appendChild(document.createElement('i')));
+let cur=0;
+function render(){
+  leaves.forEach((l,i)=>{l.classList.toggle('turned',i<cur);l.classList.toggle('hidden',i>cur+1)});
+  [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===cur));
+  prev.disabled=cur===0; next.disabled=cur===leaves.length-1;
+  nav.classList.toggle('on',cur>0);
+}
+function go(n){
+  n=Math.max(0,Math.min(leaves.length-1,n)); if(n===cur) return;
+  const wasCover=cur===0; cur=n; render();
+  if(wasCover||cur===leaves.length-1) burst();
+}
+document.getElementById('cover').addEventListener('click',()=>go(1));
+document.getElementById('cover').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')go(1)});
+next.onclick=()=>go(cur+1); prev.onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+let sx=null;
+addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(sx===null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)go(cur+(d<0?1:-1));sx=null});
+render();
+
+/* ---- falling flower petals (always on) + burst when pages open ---- */
+const cv=document.getElementById('petals'),cx=cv.getContext('2d');
+function size(){cv.width=innerWidth;cv.height=innerHeight}size();addEventListener('resize',size);
+const pc=['#EBBCC6','#F3A6B8','#F9E3D6','#F4CF5D','#C4D188'];
+const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const petal=(burst)=>({x:burst?innerWidth/2:Math.random()*innerWidth,y:burst?innerHeight*.45:-20,
+  vx:burst?(Math.random()-.5)*13:(Math.random()-.5)*1.2,vy:burst?-Math.random()*12-2:Math.random()*1.4+.7,
+  s:Math.random()*9+7,c:pc[Math.random()*pc.length|0],r:Math.random()*6,vr:(Math.random()-.5)*.08,ph:Math.random()*6,burst});
+let ps=still?[]:Array.from({length:22},()=>{const p=petal();p.y=Math.random()*innerHeight;return p});
+function burst(){if(!still)for(let i=0;i<70;i++)ps.push(petal(true))}
+(function loop(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  ps.forEach(p=>{
+    p.x+=p.vx+Math.sin(p.ph+=.03)*.6;p.y+=p.vy;p.r+=p.vr+(p.burst?.1:0);
+    if(p.burst)p.vy+=.25,p.vx*=.985;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.globalAlpha=.9;
+    cx.beginPath();cx.ellipse(0,0,p.s,p.s*.55,0,0,6.3);cx.fill();cx.restore();
+  });
+  ps=ps.filter(p=>p.y<innerHeight+30);
+  if(!still&&ps.filter(p=>!p.burst).length<22)ps.push(petal());
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
